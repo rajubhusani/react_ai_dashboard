@@ -1,0 +1,116 @@
+.organic-vs-paid {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.close-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #6b7280;
+}
+
+.legend-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.legend-color {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.legend-color.blue {
+  background-color: #3b82f6;
+}
+
+.legend-color.green {
+  background-color: #10b981;
+}
+
+.bar-chart {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  height: 120px;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.bar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.bars {
+  display: flex;
+  gap: 2px;
+  align-items: end;
+  height: 100px;
+}
+
+.bar {
+  width: 12px;
+  border-radius: 2px 2px 0 0;
+}
+
+.bar.paid {
+  background-color: #3b82f6;
+}
+
+.bar.organic {
+  background-color: #10b981;
+}
+
+.bar-label {
+  font-size: 10px;
+  color: #9ca3af;
+  transform: rotate(-45deg);
+  white-space: nowrap;
+}
+
+.y-axis-labels {
+  position: absolute;
+  left: -20px;
+  top: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100px;
+  font-size: 10px;
+  color: #9ca3af;
+}

@@ -1,0 +1,470 @@
+.sentiment-analysis {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.sentiment-analysis .widget-header {
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sentiment-analysis .widget-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Top Cards Row */
+.sentiment-analysis .sentiment-cards-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.sentiment-analysis .sentiment-card {
+  flex: 1;
+  min-width: 130px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+}
+
+.sentiment-analysis .card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sentiment-analysis .card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sentiment-analysis .card-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1f2937;
+  text-transform: capitalize;
+  margin-bottom: 4px;
+}
+
+.sentiment-analysis .card-value {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.sentiment-analysis .card-emoji {
+  font-size: 48px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* Info cards (Total prompts, Satisfaction) */
+.sentiment-analysis .info-card {
+  background: white !important;
+  border: 2px solid #d1d5db !important;
+  border-radius: 12px;
+}
+
+.sentiment-analysis .info-card .card-label {
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.sentiment-analysis .info-card .card-value {
+  color: #111827;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* Bottom Charts Row */
+.sentiment-analysis .sentiment-charts-row {
+  display: grid;
+  grid-template-columns: 40% 1fr auto;
+  gap: 40px;
+}
+
+.sentiment-analysis .section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 20px 0;
+  letter-spacing: -0.01em;
+}
+
+/* Prompts per sentiment */
+.sentiment-analysis .prompts-section {
+  padding-right: 0;
+}
+
+.sentiment-analysis .prompts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sentiment-analysis .prompt-item {
+  display: grid;
+  grid-template-columns: 70px 35px 1fr 55px;
+  align-items: center;
+  gap: 12px;
+}
+
+.sentiment-analysis .prompt-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  text-transform: capitalize;
+}
+
+.sentiment-analysis .prompt-count {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  text-align: right;
+}
+
+.sentiment-analysis .prompt-bar-container {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.sentiment-analysis .prompt-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.sentiment-analysis .prompt-percentage {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6b7280;
+  text-align: right;
+}
+
+/* Trend sections */
+.sentiment-analysis .trend-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.sentiment-analysis .positive-sentiment-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+
+.sentiment-analysis .positive-sentiment-section .section-title {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.sentiment-analysis .trend-up {
+  color: #10b981;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.sentiment-analysis .trend-chart-placeholder {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 200px;
+}
+
+.sentiment-analysis .trend-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 4px;
+  height: 140px;
+  margin-bottom: 8px;
+}
+
+.sentiment-analysis .trend-bar-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  cursor: pointer;
+  position: relative;
+  min-width: 0;
+}
+
+.sentiment-analysis .trend-bar-group:hover {
+  opacity: 0.8;
+}
+
+.sentiment-analysis .trend-bar-stack {
+  width: 100%;
+  max-width: 24px;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: stretch;
+  height: 100%;
+}
+
+.sentiment-analysis .trend-bar-segment {
+  width: 100%;
+  transition: all 0.3s ease;
+  min-height: 2px;
+}
+
+.sentiment-analysis .trend-bar-segment:first-child {
+  border-radius: 2px 2px 0 0;
+}
+
+.sentiment-analysis .trend-bar-segment.positive {
+  background: #10b981;
+}
+
+.sentiment-analysis .trend-bar-segment.negative {
+  background: #ef4444;
+}
+
+.sentiment-analysis .trend-bar-segment.neutral {
+  background: #f59e0b;
+}
+
+.sentiment-analysis .trend-bar-segment.mixed {
+  background: #6b7280;
+}
+
+.sentiment-analysis .trend-bar-segment.unknown {
+  background: #9ca3af;
+}
+
+/* X-axis labels */
+.sentiment-analysis .trend-x-axis {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  padding-top: 8px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.sentiment-analysis .trend-x-label {
+  flex: 1;
+  font-size: 10px;
+  color: #9ca3af;
+  text-align: center;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+/* Loading and error states */
+.sentiment-analysis .loading,
+.sentiment-analysis .error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  font-size: 16px;
+  color: #6c757d;
+}
+
+.sentiment-analysis .error {
+  color: #ef4444;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .sentiment-analysis .sentiment-charts-row {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .sentiment-analysis .prompts-section {
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding-right: 0;
+    padding-bottom: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sentiment-analysis {
+    padding: 15px;
+  }
+
+  .sentiment-analysis .sentiment-cards-row {
+    flex-direction: column;
+  }
+
+  .sentiment-analysis .sentiment-card {
+    min-width: 100%;
+  }
+
+  .sentiment-analysis .prompt-item {
+    grid-template-columns: 70px 30px 1fr 50px;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sentiment-analysis .widget-header h3 {
+    font-size: 14px;
+  }
+
+  .sentiment-analysis .card-value {
+    font-size: 18px;
+  }
+
+  .sentiment-analysis .card-emoji {
+    font-size: 24px;
+  }
+}
+
+/* Tooltip */
+.sentiment-tooltip {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 180px;
+}
+
+.sentiment-tooltip .tooltip-date {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.sentiment-tooltip .tooltip-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sentiment-tooltip .tooltip-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.sentiment-tooltip .tooltip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sentiment-tooltip .tooltip-label {
+  color: #6b7280;
+  flex: 1;
+}
+
+.sentiment-tooltip .tooltip-value {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* Dark theme support */
+[data-theme="dark"] .sentiment-analysis {
+  background: #1f2937;
+}
+
+[data-theme="dark"] .sentiment-analysis .widget-header h3 {
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .sentiment-analysis .section-title {
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .sentiment-analysis .card-label {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .sentiment-analysis .card-value {
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .sentiment-analysis .info-card {
+  background: #374151 !important;
+  border-color: #4b5563 !important;
+}
+
+[data-theme="dark"] .sentiment-analysis .info-card .card-label {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .sentiment-analysis .info-card .card-value {
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .sentiment-analysis .prompt-label {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .sentiment-analysis .prompt-count {
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .sentiment-analysis .prompt-bar-container {
+  background: #374151;
+}
+
+[data-theme="dark"] .sentiment-analysis .prompt-percentage {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .sentiment-analysis .trend-x-axis {
+  border-top-color: #4b5563;
+}
+
+[data-theme="dark"] .sentiment-analysis .trend-x-label {
+  color: #d1d5db;
+}
+
+[data-theme="dark"] .sentiment-analysis .loading,
+[data-theme="dark"] .sentiment-analysis .error {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .sentiment-analysis .error {
+  color: #f87171;
+}
+
+[data-theme="dark"] .sentiment-tooltip {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+[data-theme="dark"] .sentiment-tooltip .tooltip-date {
+  color: #f9fafb;
+  border-bottom-color: #4b5563;
+}
+
+[data-theme="dark"] .sentiment-tooltip .tooltip-label {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .sentiment-tooltip .tooltip-value {
+  color: #f9fafb;
+}

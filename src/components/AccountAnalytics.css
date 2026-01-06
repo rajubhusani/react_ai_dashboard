@@ -1,0 +1,154 @@
+.account-analytics {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.account-analytics .widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.account-analytics h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* Account Filter Info */
+.account-filter-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #1e40af;
+  border-left: 3px solid #3b82f6;
+}
+
+.account-filter-info svg {
+  flex-shrink: 0;
+  color: #3b82f6;
+}
+
+.account-filter-info strong {
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+/* Summary Stats */
+.account-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.summary-item {
+  text-align: center;
+  padding: 12px;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border-radius: 8px;
+}
+
+.summary-label {
+  font-size: 12px;
+  color: #1e40af;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.summary-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+.summary-value.trend {
+  font-size: 20px;
+}
+
+.summary-value.trend.positive {
+  color: #10b981;
+}
+
+.summary-value.trend.negative {
+  color: #ef4444;
+}
+
+/* Chart Container */
+.chart-container {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* Loading, Error, No Data States */
+.account-analytics .loading,
+.account-analytics .error,
+.account-analytics .no-data {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.account-analytics .error {
+  color: #ef4444;
+}
+
+.account-analytics .no-data {
+  color: #9ca3af;
+}
+
+/* Dark Mode */
+[data-theme='dark'] .account-analytics {
+  background: #1f2937;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .account-analytics h3 {
+  color: #f9fafb;
+}
+
+[data-theme='dark'] .account-filter-info {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  color: #93c5fd;
+  border-left-color: #60a5fa;
+}
+
+[data-theme='dark'] .account-filter-info svg {
+  color: #60a5fa;
+}
+
+[data-theme='dark'] .account-filter-info strong {
+  color: #dbeafe;
+}
+
+[data-theme='dark'] .summary-item {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+}
+
+[data-theme='dark'] .summary-label {
+  color: #93c5fd;
+}
+
+[data-theme='dark'] .summary-value {
+  color: #dbeafe;
+}
+
+[data-theme='dark'] .account-analytics .loading,
+[data-theme='dark'] .account-analytics .no-data {
+  color: #9ca3af;
+}
+
+[data-theme='dark'] .account-analytics .error {
+  color: #f87171;
+}
+

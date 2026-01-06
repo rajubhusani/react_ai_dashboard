@@ -1,0 +1,393 @@
+.intents {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.intents .widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.intents .widget-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.refresh-btn {
+  padding: 6px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.refresh-btn:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.refresh-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.refresh-btn svg {
+  color: #6b7280;
+}
+
+.intents-summary {
+  padding: 16px;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.total-label {
+  font-size: 13px;
+  color: #1e40af;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.total-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+.intents-content {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.chart-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 20px 0;
+  width: 280px;
+}
+
+.intents-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+}
+
+.legend-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.legend-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.legend-row.expandable {
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 0 -8px;
+}
+
+.legend-row.expandable:hover {
+  background-color: #f9fafb;
+}
+
+.legend-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chevron-icon {
+  color: #9ca3af;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.chevron-icon.expanded {
+  transform: rotate(90deg);
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.legend-label {
+  font-size: 13px;
+  color: #374151;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.legend-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-count {
+  font-size: 14px;
+  color: #111827;
+  font-weight: 600;
+}
+
+.legend-percentage {
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+  min-width: 45px;
+  text-align: right;
+}
+
+.legend-bar {
+  height: 6px;
+  background: #f3f4f6;
+  border-radius: 3px;
+  overflow: hidden;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.legend-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.loading,
+.error {
+  padding: 40px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.error {
+  color: #ef4444;
+}
+
+/* Parameter Details Styles */
+.parameter-details {
+  margin-top: 8px;
+  margin-left: 20px;
+  padding-left: 16px;
+  border-left: 2px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.parameter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.parameter-group-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.parameter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 8px;
+}
+
+.parameter-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.parameter-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.parameter-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.parameter-label {
+  font-size: 12px;
+  color: #6b7280;
+  text-transform: capitalize;
+}
+
+.parameter-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.parameter-count {
+  font-size: 12px;
+  color: #374151;
+  font-weight: 500;
+}
+
+.parameter-percentage {
+  font-size: 11px;
+  color: #9ca3af;
+  min-width: 40px;
+  text-align: right;
+}
+
+.parameter-bar {
+  height: 4px;
+  background: #f9fafb;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-left: 14px;
+}
+
+.parameter-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* Dark theme support */
+[data-theme="dark"] .intents {
+  background: #1f2937;
+}
+
+[data-theme="dark"] .intents .widget-header h3 {
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .refresh-btn {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+[data-theme="dark"] .refresh-btn:hover:not(:disabled) {
+  background: #4b5563;
+  border-color: #6b7280;
+}
+
+[data-theme="dark"] .refresh-btn svg {
+  color: #d1d5db;
+}
+
+[data-theme="dark"] .intents-summary {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+}
+
+[data-theme="dark"] .total-label {
+  color: #93c5fd;
+}
+
+[data-theme="dark"] .total-value {
+  color: #dbeafe;
+}
+
+[data-theme="dark"] .legend-label {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .legend-count {
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .legend-percentage {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .legend-bar {
+  background: #374151;
+}
+
+[data-theme="dark"] .legend-row.expandable:hover {
+  background-color: #374151;
+}
+
+[data-theme="dark"] .chevron-icon {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .parameter-details {
+  border-left-color: #4b5563;
+}
+
+[data-theme="dark"] .parameter-group-title {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .parameter-label {
+  color: #d1d5db;
+}
+
+[data-theme="dark"] .parameter-count {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .parameter-percentage {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .parameter-bar {
+  background: #374151;
+}
+
+[data-theme="dark"] .loading,
+[data-theme="dark"] .error {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .error {
+  color: #f87171;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+  .intents-content {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .chart-wrapper {
+    width: 100%;
+  }
+}
+

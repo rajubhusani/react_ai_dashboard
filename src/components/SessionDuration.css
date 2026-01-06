@@ -1,0 +1,170 @@
+.session-duration {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.session-duration .widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.session-duration .widget-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.session-duration .account-filter-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border-radius: 6px;
+  font-size: 12px;
+  color: #1e40af;
+  border-left: 2px solid #3b82f6;
+  margin-bottom: 8px;
+}
+
+.session-duration .account-filter-badge svg {
+  flex-shrink: 0;
+  color: #3b82f6;
+}
+
+.session-duration .account-filter-badge strong {
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+.widget-content {
+  flex: 1;
+}
+
+.duration-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #5b21b6;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #4c1d95;
+}
+
+.chart-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.chart-container {
+  margin: 8px 0;
+  padding: 0 10px;
+  width: 100%;
+}
+
+.x-axis-labels {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 60px;
+  margin-top: -8px;
+}
+
+.x-label {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.loading,
+.error,
+.no-data {
+  padding: 40px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.error {
+  color: #ef4444;
+}
+
+/* Dark theme support */
+[data-theme="dark"] .session-duration {
+  background: #1f2937;
+}
+
+[data-theme="dark"] .session-duration .widget-header h3 {
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .stat-card {
+  background: linear-gradient(135deg, #5b21b6 0%, #6d28d9 100%);
+}
+
+[data-theme="dark"] .stat-label {
+  color: #e9d5ff;
+}
+
+[data-theme="dark"] .stat-value {
+  color: #f3e8ff;
+}
+
+[data-theme="dark"] .chart-label {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .x-label {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .loading,
+[data-theme="dark"] .error,
+[data-theme="dark"] .no-data {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .error {
+  color: #f87171;
+}
+
+[data-theme="dark"] .session-duration .account-filter-badge {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  color: #93c5fd;
+  border-left-color: #60a5fa;
+}
+
+[data-theme="dark"] .session-duration .account-filter-badge svg {
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .session-duration .account-filter-badge strong {
+  color: #dbeafe;
+}
+

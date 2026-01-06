@@ -1,0 +1,409 @@
+/* Light Theme (Default) */
+:root[data-theme="light"] {
+  /* Background colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-tertiary: #f3f4f6;
+  
+  /* Text colors */
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  
+  /* Border colors */
+  --border-primary: #e5e7eb;
+  --border-secondary: #d1d5db;
+  
+  /* Widget colors */
+  --widget-bg: #ffffff;
+  --widget-shadow: rgba(0, 0, 0, 0.1);
+  
+  /* Chart colors */
+  --chart-grid: rgba(107, 114, 128, 0.1);
+  --chart-text: #6b7280;
+  
+  /* Accent colors */
+  --accent-green: #10b981;
+  --accent-green-light: #f0fdf4;
+  --accent-green-lighter: #dcfce7;
+  --accent-blue: #3b82f6;
+  --accent-red: #ef4444;
+  
+  /* Input colors */
+  --input-bg: #f9fafb;
+  --input-border: #d1d5db;
+  --input-focus: #3b82f6;
+}
+
+/* Dark Theme */
+:root[data-theme="dark"] {
+  /* Background colors */
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --bg-tertiary: #374151;
+  
+  /* Text colors */
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  
+  /* Border colors */
+  --border-primary: #374151;
+  --border-secondary: #4b5563;
+  
+  /* Widget colors */
+  --widget-bg: #1f2937;
+  --widget-shadow: rgba(0, 0, 0, 0.3);
+  
+  /* Chart colors */
+  --chart-grid: rgba(156, 163, 175, 0.1);
+  --chart-text: #9ca3af;
+  
+  /* Accent colors */
+  --accent-green: #10b981;
+  --accent-green-light: #064e3b;
+  --accent-green-lighter: #065f46;
+  --accent-blue: #3b82f6;
+  --accent-red: #ef4444;
+  
+  /* Input colors */
+  --input-bg: #374151;
+  --input-border: #4b5563;
+  --input-focus: #3b82f6;
+}
+
+/* Apply theme to body */
+body {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Apply theme to common elements */
+.header {
+  background: var(--widget-bg) !important;
+  border-bottom: 1px solid var(--border-primary) !important;
+}
+
+.header-title {
+  color: var(--text-primary) !important;
+}
+
+.header-button {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.header-button:hover {
+  background-color: var(--bg-tertiary) !important;
+  border-color: var(--text-tertiary) !important;
+}
+
+/* Widget styles */
+.widget,
+.trends,
+.intents,
+.user-trends,
+.ai-usage {
+  background: var(--widget-bg) !important;
+  box-shadow: 0 1px 3px var(--widget-shadow) !important;
+}
+
+.widget-header h3 {
+  color: var(--text-primary) !important;
+}
+
+/* Summary and stat cards */
+.trends-summary {
+  background: var(--accent-green-light) !important;
+}
+
+.summary-label,
+.stat-label,
+.info-label {
+  color: var(--text-secondary) !important;
+}
+
+.summary-value,
+.stat-value,
+.info-value {
+  color: var(--text-primary) !important;
+}
+
+/* Chart containers */
+.chart-container {
+  background: transparent !important;
+}
+
+/* Dropdowns and inputs */
+select,
+.group-by-selector select {
+  background: var(--input-bg) !important;
+  border: 1px solid var(--input-border) !important;
+  color: var(--text-primary) !important;
+}
+
+select:focus {
+  border-color: var(--input-focus) !important;
+}
+
+/* Buttons */
+.metric-btn {
+  background: var(--bg-tertiary) !important;
+  color: var(--text-secondary) !important;
+}
+
+.metric-btn:hover {
+  background: var(--widget-bg) !important;
+}
+
+.metric-btn.active {
+  background: var(--widget-bg) !important;
+  box-shadow: 0 1px 3px var(--widget-shadow) !important;
+}
+
+/* Stat cards */
+.stat-card {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-primary) !important;
+}
+
+/* Trend summary */
+.trend-summary {
+  background: var(--bg-secondary) !important;
+}
+
+/* Info sections */
+.trends-info {
+  background: var(--bg-secondary) !important;
+}
+
+/* X-axis labels */
+.x-label {
+  color: var(--chart-text) !important;
+}
+
+/* Loading and error states */
+.loading,
+.error {
+  color: var(--text-secondary) !important;
+}
+
+.error {
+  color: var(--accent-red) !important;
+}
+
+/* Metric selector */
+.metric-selector {
+  background: var(--bg-tertiary) !important;
+}
+
+/* SVG chart elements - these need to be updated via inline styles in components */
+/* But we can set defaults for text elements */
+svg text {
+  fill: var(--chart-text) !important;
+}
+
+/* Smooth transitions for theme changes */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Disable transitions on charts to prevent animation issues */
+svg,
+svg * {
+  transition: none !important;
+}
+
+/* Theme toggle button animation */
+.theme-toggle svg {
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover svg {
+  transform: rotate(20deg);
+}
+
+/* ========================================
+   Sentiment Analysis Dark Theme
+   ======================================== */
+.sentiment-analysis {
+  background: var(--widget-bg) !important;
+  box-shadow: 0 2px 8px var(--widget-shadow) !important;
+}
+
+.sentiment-analysis .widget-header h3 {
+  color: var(--text-primary) !important;
+}
+
+.sentiment-analysis .stat-badge {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-primary) !important;
+}
+
+.sentiment-analysis .stat-label {
+  color: var(--text-secondary) !important;
+}
+
+.sentiment-analysis .stat-value {
+  color: var(--text-primary) !important;
+}
+
+.sentiment-analysis .breakdown-title {
+  color: var(--text-primary) !important;
+  border-bottom: 2px solid var(--border-primary) !important;
+}
+
+.sentiment-analysis .sentiment-name {
+  color: var(--text-primary) !important;
+}
+
+.sentiment-analysis .sentiment-count {
+  color: var(--text-primary) !important;
+}
+
+.sentiment-analysis .sentiment-percentage {
+  color: var(--text-secondary) !important;
+}
+
+.sentiment-analysis .sentiment-bar-container {
+  background: var(--bg-tertiary) !important;
+}
+
+.sentiment-analysis .summary-card {
+  background: var(--bg-secondary) !important;
+  border: 2px solid var(--border-primary) !important;
+}
+
+.sentiment-analysis .summary-card.positive {
+  border-color: var(--accent-green) !important;
+  background: var(--accent-green-light) !important;
+}
+
+.sentiment-analysis .summary-card.negative {
+  border-color: var(--accent-red) !important;
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+
+.sentiment-analysis .summary-card.neutral {
+  border-color: var(--border-secondary) !important;
+  background: var(--bg-tertiary) !important;
+}
+
+.sentiment-analysis .summary-card.mixed {
+  border-color: #f59e0b !important;
+  background: rgba(245, 158, 11, 0.1) !important;
+}
+
+.sentiment-analysis .summary-label {
+  color: var(--text-secondary) !important;
+}
+
+.sentiment-analysis .summary-value {
+  color: var(--text-primary) !important;
+}
+
+/* ========================================
+   Sessions Map Dark Theme
+   ======================================== */
+.sessions-map {
+  background: var(--widget-bg) !important;
+  box-shadow: 0 2px 8px var(--widget-shadow) !important;
+}
+
+.sessions-map .widget-header h3 {
+  color: var(--text-primary) !important;
+}
+
+.sessions-map .map-stats {
+  color: var(--text-secondary) !important;
+}
+
+.sessions-map .stat-number {
+  color: var(--text-primary) !important;
+}
+
+.sessions-map .legend {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-primary) !important;
+}
+
+.sessions-map .legend-title {
+  color: var(--text-primary) !important;
+}
+
+.sessions-map .legend-item {
+  color: var(--text-secondary) !important;
+}
+
+/* ========================================
+   Session Duration Dark Theme
+   ======================================== */
+.session-duration {
+  background: var(--widget-bg) !important;
+  box-shadow: 0 2px 8px var(--widget-shadow) !important;
+}
+
+.session-duration .widget-header h3 {
+  color: var(--text-primary) !important;
+}
+
+.session-duration .duration-stats {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-primary) !important;
+}
+
+.session-duration .duration-label {
+  color: var(--text-secondary) !important;
+}
+
+.session-duration .duration-value {
+  color: var(--text-primary) !important;
+}
+
+/* ========================================
+   Sessions by Flavor Dark Theme
+   ======================================== */
+.sessions-by-flavor {
+  background: var(--widget-bg) !important;
+  box-shadow: 0 2px 8px var(--widget-shadow) !important;
+}
+
+.sessions-by-flavor .widget-header h3 {
+  color: var(--text-primary) !important;
+}
+
+.sessions-by-flavor .flavor-stats {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-primary) !important;
+}
+
+.sessions-by-flavor .flavor-label {
+  color: var(--text-secondary) !important;
+}
+
+.sessions-by-flavor .flavor-value {
+  color: var(--text-primary) !important;
+}
+
+.sessions-by-flavor .flavor-list {
+  background: var(--bg-secondary) !important;
+}
+
+.sessions-by-flavor .flavor-item {
+  border-bottom: 1px solid var(--border-primary) !important;
+}
+
+.sessions-by-flavor .flavor-name {
+  color: var(--text-primary) !important;
+}
+
+.sessions-by-flavor .flavor-count {
+  color: var(--text-secondary) !important;
+}
+
+.sessions-by-flavor .flavor-percentage {
+  color: var(--text-primary) !important;
+}
+

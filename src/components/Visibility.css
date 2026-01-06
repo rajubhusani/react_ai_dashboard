@@ -1,0 +1,54 @@
+.visibility {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.visibility-metric {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.percentage {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.change {
+  font-size: 14px;
+  color: #10b981;
+  font-weight: 500;
+}
+
+.search-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.search-info span:first-child {
+  color: #6b7280;
+}
+
+.rank-change {
+  color: #10b981;
+  font-weight: 500;
+}
+
+.chart-container {
+  height: 120px;
+  margin-bottom: 16px;
+}
+
+.date-range {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #9ca3af;
+}

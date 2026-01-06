@@ -1,0 +1,301 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  height: 64px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.back-button:hover {
+  background-color: #f3f4f6;
+}
+
+.header-center {
+  flex: 1;
+  max-width: 400px;
+  margin: 0 32px;
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 12px 8px 36px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #f9fafb;
+  outline: none;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.search-input:focus {
+  border-color: #3b82f6;
+  background: white;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  color: #9ca3af;
+  z-index: 1;
+}
+
+.search-shortcut {
+  position: absolute;
+  right: 12px;
+  font-size: 12px;
+  color: #9ca3af;
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Account Code Search */
+.account-code-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  transition: border-color 0.2s;
+  min-width: 220px;
+}
+
+.account-code-search:hover {
+  border-color: #9ca3af;
+}
+
+.account-code-search:focus-within {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.account-search-icon {
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.account-code-input {
+  border: none;
+  outline: none;
+  font-size: 13px;
+  color: #374151;
+  background: transparent;
+  padding: 2px 4px;
+  font-family: inherit;
+  flex: 1;
+  min-width: 0;
+}
+
+.account-code-input::placeholder {
+  color: #9ca3af;
+}
+
+.clear-account-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: #9ca3af;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.clear-account-btn:hover {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* Date Range Picker */
+.date-range-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  transition: border-color 0.2s;
+}
+
+.date-range-picker:hover {
+  border-color: #9ca3af;
+}
+
+.calendar-icon {
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.date-input {
+  border: none;
+  outline: none;
+  font-size: 13px;
+  color: #374151;
+  background: transparent;
+  cursor: pointer;
+  padding: 2px 4px;
+  font-family: inherit;
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.date-input::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+.date-separator {
+  color: #9ca3af;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.header-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid #d1d5db;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.header-button:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.beta-badge {
+  background: #10b981;
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+/* Dark Mode */
+[data-theme='dark'] .header {
+  background: #1f2937;
+  border-bottom-color: #374151;
+}
+
+[data-theme='dark'] .header-title {
+  color: #f9fafb;
+}
+
+[data-theme='dark'] .account-code-search {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+[data-theme='dark'] .account-code-search:hover {
+  border-color: #6b7280;
+}
+
+[data-theme='dark'] .account-code-search:focus-within {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+[data-theme='dark'] .account-search-icon {
+  color: #9ca3af;
+}
+
+[data-theme='dark'] .account-code-input {
+  color: #f9fafb;
+}
+
+[data-theme='dark'] .account-code-input::placeholder {
+  color: #6b7280;
+}
+
+[data-theme='dark'] .clear-account-btn {
+  color: #6b7280;
+}
+
+[data-theme='dark'] .clear-account-btn:hover {
+  background: #4b5563;
+  color: #9ca3af;
+}
+
+[data-theme='dark'] .date-range-picker {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+[data-theme='dark'] .date-range-picker:hover {
+  border-color: #6b7280;
+}
+
+[data-theme='dark'] .calendar-icon {
+  color: #9ca3af;
+}
+
+[data-theme='dark'] .date-input {
+  color: #f9fafb;
+}
+
+[data-theme='dark'] .header-button {
+  background: #374151;
+  border-color: #4b5563;
+  color: #f9fafb;
+}
+
+[data-theme='dark'] .header-button:hover {
+  background: #4b5563;
+  border-color: #6b7280;
+}

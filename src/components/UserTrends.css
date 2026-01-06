@@ -1,0 +1,286 @@
+.user-trends {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.user-trends .widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.user-trends .widget-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.user-trends .controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.user-trends .metric-selector {
+  display: flex;
+  gap: 8px;
+  background: #f3f4f6;
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.user-trends .metric-btn {
+  padding: 6px 12px;
+  border: 2px solid transparent;
+  background: transparent;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.user-trends .metric-btn:hover {
+  background: white;
+}
+
+.user-trends .metric-btn.active {
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.user-trends .group-by-selector select {
+  padding: 6px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 13px;
+  background: white;
+  cursor: pointer;
+  color: #374151;
+}
+
+.user-trends .group-by-selector select:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.user-trends .stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.user-trends .stat-card {
+  background: #f9fafb;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.user-trends .stat-label {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.user-trends .stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.user-trends .trend-summary {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: #f9fafb;
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.user-trends .summary-item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.user-trends .summary-label {
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.user-trends .summary-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.user-trends .summary-value.positive {
+  color: #10b981;
+}
+
+.user-trends .summary-value.negative {
+  color: #ef4444;
+}
+
+.user-trends .chart-container {
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+.user-trends .x-axis-labels {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 50px 0 50px;
+  margin-top: 8px;
+}
+
+.user-trends .x-label {
+  font-size: 11px;
+  color: #6b7280;
+  text-align: center;
+}
+
+.user-trends .loading,
+.user-trends .error {
+  padding: 40px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.user-trends .error {
+  color: #ef4444;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .user-trends {
+    padding: 16px;
+  }
+
+  .user-trends .widget-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .user-trends .controls {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .user-trends .metric-selector {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .user-trends .metric-btn {
+    flex: 1;
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+
+  .user-trends .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .user-trends .stat-value {
+    font-size: 20px;
+  }
+
+  .user-trends .trend-summary {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .user-trends .x-axis-labels {
+    padding: 0 20px;
+  }
+}
+
+/* Dark theme support */
+[data-theme="dark"] .user-trends {
+  background: #1f2937;
+}
+
+[data-theme="dark"] .user-trends .widget-header h3 {
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .user-trends .metric-selector {
+  background: #374151;
+}
+
+[data-theme="dark"] .user-trends .metric-btn {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .user-trends .metric-btn:hover {
+  background: #4b5563;
+}
+
+[data-theme="dark"] .user-trends .metric-btn.active {
+  background: #4b5563;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .user-trends .group-by-selector select {
+  background: #374151;
+  border-color: #4b5563;
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .user-trends .group-by-selector select:focus {
+  border-color: #60a5fa;
+}
+
+[data-theme="dark"] .user-trends .stat-card {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+[data-theme="dark"] .user-trends .stat-label {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .user-trends .stat-value {
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .user-trends .trend-summary {
+  background: #374151;
+}
+
+[data-theme="dark"] .user-trends .summary-label {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .user-trends .summary-value {
+  color: #f9fafb;
+}
+
+[data-theme="dark"] .user-trends .x-label {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .user-trends .loading,
+[data-theme="dark"] .user-trends .error {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .user-trends .error {
+  color: #f87171;
+}
+

@@ -116,7 +116,56 @@ export const processQueryTrends = (allEntries, groupBy, startDate, endDate) => {
     const key = dayjs(e.timestamp).startOf(groupBy).toISOString()
     grouped[key] = (grouped[key] || 0) + 1
   }
-  return Object.entries(grouped).map(([time, count]) => ({ time, count }))
+  const result = Object.entries(grouped)
+    .map(([time, count]) => ({ time, count }))
+    .sort((a, b) => new Date(a.time) - new Date(b.time))
+
+  // Fill in missing dates with zero values (only for daily grouping)
+  return fillMissingDatesForTrends(result, groupBy, startDate, endDate)
+}
+
+// Helper function to fill missing dates in Query Trends
+const fillMissingDatesForTrends = (data, groupBy, startDate, endDate) => {
+  // Only fill missing dates for daily data
+  if (groupBy !== 'day') {
+    return data
+  }
+
+  // Determine the date range to fill
+  let firstDate, lastDate
+
+  if (startDate && endDate) {
+    firstDate = dayjs(startDate).startOf('day')
+    lastDate = dayjs(endDate).startOf('day')
+  } else if (data.length > 0) {
+    firstDate = dayjs(data[0].time).startOf('day')
+    lastDate = dayjs(data[data.length - 1].time).startOf('day')
+  } else {
+    return data
+  }
+
+  const filledData = []
+  const dataMap = new Map(data.map(item => [dayjs(item.time).startOf('day').toISOString(), item]))
+
+  let currentDate = firstDate
+
+  while (currentDate.isBefore(lastDate) || currentDate.isSame(lastDate, 'day')) {
+    const dateKey = currentDate.startOf('day').toISOString()
+
+    if (dataMap.has(dateKey)) {
+      filledData.push(dataMap.get(dateKey))
+    } else {
+      // Add empty data point for missing date
+      filledData.push({
+        time: dateKey,
+        count: 0,
+      })
+    }
+
+    currentDate = currentDate.add(1, 'day')
+  }
+
+  return filledData
 }
 
 // Process Average Response Time
@@ -232,20 +281,54 @@ export const processAIUsageTrends = (allEntries, groupBy, startDate, endDate) =>
 
 
 // Process User Analytics - Total Users
-export const processUserTotal = (allEntries) => {
+export const processUserTotal = (allEntries, startDate, endDate) => {
   const uniqueUsers = new Set()
   const activeUsers = new Set()
+  const userFirstSeen = new Map() // Track earliest timestamp per user
   const thirtyDaysAgo = dayjs().subtract(30, 'day')
+
+  // First pass: find earliest timestamp for each user
   for (const e of allEntries) {
-    if (e.userId) {
+    if (e.userId && e.timestamp) {
       uniqueUsers.add(e.userId)
-      if (dayjs(e.timestamp).isAfter(thirtyDaysAgo)) activeUsers.add(e.userId)
+      const timestamp = dayjs(e.timestamp)
+
+      // Track earliest timestamp for this user
+      if (!userFirstSeen.has(e.userId) || timestamp.isBefore(userFirstSeen.get(e.userId))) {
+        userFirstSeen.set(e.userId, timestamp)
+      }
+
+      // Track active users (last 30 days)
+      if (timestamp.isAfter(thirtyDaysAgo)) {
+        activeUsers.add(e.userId)
+      }
     }
   }
+
+  // Count new users within the selected date range
+  let newUsersCount = 0
+  if (startDate && endDate) {
+    const start = dayjs(startDate).startOf('day')
+    const end = dayjs(endDate).endOf('day')
+
+    for (const [userId, firstTimestamp] of userFirstSeen.entries()) {
+      if ((firstTimestamp.isAfter(start) || firstTimestamp.isSame(start, 'day')) &&
+          (firstTimestamp.isBefore(end) || firstTimestamp.isSame(end, 'day'))) {
+        newUsersCount++
+      }
+    }
+  }
+
   const totalUsers = uniqueUsers.size
   const activeCount = activeUsers.size
   const retentionRate = totalUsers > 0 ? (activeCount / totalUsers) * 100 : 0
-  return { totalUsers, activeUsers: activeCount, newUsers: 0, retentionRate: +retentionRate.toFixed(1) }
+
+  return {
+    totalUsers,
+    activeUsers: activeCount,
+    newUsers: newUsersCount,
+    retentionRate: +retentionRate.toFixed(1)
+  }
 }
 
 // Process User Creation Trends

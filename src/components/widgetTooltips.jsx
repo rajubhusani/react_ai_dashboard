@@ -34,8 +34,8 @@ export const widgetTooltips = {
       <p><strong>Metrics:</strong></p>
       <ul>
         <li><strong>Total Prompts:</strong> Number of user questions/requests to the AI</li>
-        <li><strong>Unique Users:</strong> Count of distinct users interacting with the AI</li>
-        <li><strong>Sessions:</strong> Number of conversation sessions initiated</li>
+        <li><strong>Average:</strong> Represents the mean number of Total Prompts across the selected time period. Helps identify typical usage as well as spikes or dips.</li>
+        <li><strong>Trend:</strong> Represents the overall direction of change in Total Prompts across the selected time period, indicating whether usage is increasing, decreasing, or stable</li>
       </ul>
       <p>Use this to identify usage patterns, peak times, and adoption trends.</p>
     </>
@@ -64,14 +64,14 @@ export const widgetTooltips = {
 
   userTrends: (
     <>
-      <h4>User Trends</h4>
-      <p>Analyzes user engagement patterns and behavior over time.</p>
+      <h4>User Engagement Overview</h4>
+      <p>Provides a high-level view of user adoption and activity across the platform.</p>
       <p><strong>Metrics:</strong></p>
       <ul>
-        <li><strong>New Users:</strong> First-time users in the selected period</li>
-        <li><strong>Returning Users:</strong> Users who have interacted before</li>
-        <li><strong>Active Users:</strong> Users with recent activity</li>
-        <li><strong>Total Users:</strong> Cumulative count of all users</li>
+        <li><strong>Total Users:</strong> Cumulative count of all unique users who have ever interacted with the AI</li>
+        <li><strong>Active Users:</strong> Number of users who have interacted with the AI in the last 30 days</li>
+        <li><strong>New Users:</strong> Number of users making their first interaction within the selected date range</li>
+        <li><strong>Retention Rate:</strong> Percentage of total users who were active in the most recent 30 days</li>
       </ul>
       <p>Track user growth, retention, and engagement levels.</p>
     </>
@@ -86,7 +86,6 @@ export const widgetTooltips = {
         <li><strong>Average Duration:</strong> Mean session length across all sessions</li>
         <li><strong>Min Duration:</strong> Shortest session recorded</li>
         <li><strong>Max Duration:</strong> Longest session recorded</li>
-        <li><strong>Total Duration:</strong> Sum of all session durations</li>
       </ul>
       <p>Longer sessions may indicate deeper engagement or complex problem-solving.</p>
     </>
@@ -131,7 +130,7 @@ export const widgetTooltips = {
         <li><strong>Success Rate:</strong> Percentage of successful interactions</li>
         <li><strong>Error Rate:</strong> Percentage of failed or problematic interactions</li>
       </ul>
-      <p>Monitor overall AI health and performance trends.</p>
+     <p>Monitor overall AI health and performance trends.</p>
     </>
   ),
 

@@ -3,6 +3,7 @@ import { dashboardService } from '../api/dashboardService'
 import PieChart from './PieChart'
 import InfoTooltip from './InfoTooltip'
 import { widgetTooltips } from './widgetTooltips'
+import { useUserIdListener } from '../hooks/useUserIdListener'
 import './Intents.css'
 
 const Intents = () => {
@@ -18,10 +19,11 @@ const Intents = () => {
     const saved = localStorage.getItem('dateRange')
     return saved ? JSON.parse(saved) : null
   })
+  const userId = useUserIdListener()
 
   useEffect(() => {
     fetchData()
-  }, [dateRange, accountCode])
+  }, [dateRange, accountCode, userId])
 
   useEffect(() => {
     // Listen for date range changes from header
@@ -48,12 +50,13 @@ const Intents = () => {
   const fetchData = async () => {
     setLoading(true)
     setError(null)
-    console.log(`🟡 Intents: Fetching data with dateRange=`, dateRange, 'accountCode=', accountCode)
+    console.log(`🟡 Intents: Fetching data with dateRange=`, dateRange, 'accountCode=', accountCode, 'userId=', userId)
     try {
       const result = await dashboardService.getIntents(
         dateRange?.start,
         dateRange?.end,
-        accountCode
+        accountCode,
+        userId
       )
       console.log(`✅ Intents: Successfully fetched data:`, result)
       console.log(`   - totalQueries: ${result?.totalQueries}`)

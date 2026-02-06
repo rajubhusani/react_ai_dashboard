@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { dashboardService } from '../api/dashboardService'
 import LineChart from './LineChart'
 import { useDateRangeListener } from '../hooks'
+import { useUserIdListener } from '../hooks/useUserIdListener'
 import { formatNumber, formatMillisecondsToSeconds } from '../utils'
 import {
   WIDGET_TITLES,
@@ -47,11 +48,12 @@ const AIUsage = () => {
 
   // Use custom hook for date range listening
   const dateRange = useDateRangeListener(COMPONENT_NAME)
+  const userId = useUserIdListener()
 
   useEffect(() => {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dateRange, accountCode])
+  }, [dateRange, accountCode, userId])
 
   useEffect(() => {
     // Listen for account code changes from header
@@ -67,13 +69,14 @@ const AIUsage = () => {
   const fetchData = async () => {
     setLoading(true)
     setError(null)
-    logFetch(COMPONENT_NAME, 'Fetching data with dateRange', dateRange, 'accountCode', accountCode)
+    logFetch(COMPONENT_NAME, 'Fetching data with dateRange', dateRange, 'accountCode', accountCode, 'userId', userId)
 
     try {
       const result = await dashboardService.getAIUsage(
         dateRange?.start,
         dateRange?.end,
-        accountCode
+        accountCode,
+        userId
       )
       logSuccess(COMPONENT_NAME, `Successfully fetched ${result.length} records`)
       setData(result)

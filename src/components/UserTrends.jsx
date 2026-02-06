@@ -3,6 +3,7 @@ import { dashboardService } from '../api/dashboardService'
 import BarChart from './BarChart'
 import InfoTooltip from './InfoTooltip'
 import { widgetTooltips } from './widgetTooltips'
+import { useUserIdListener } from '../hooks/useUserIdListener'
 import './UserTrends.css'
 
 const UserTrends = () => {
@@ -15,10 +16,11 @@ const UserTrends = () => {
     const saved = localStorage.getItem('dateRange')
     return saved ? JSON.parse(saved) : null
   })
+  const userId = useUserIdListener()
 
   useEffect(() => {
     fetchData()
-  }, [selectedMetric, dateRange])
+  }, [selectedMetric, dateRange, userId])
 
   useEffect(() => {
     // Listen for date range changes from header
@@ -84,11 +86,11 @@ const UserTrends = () => {
   const fetchData = async () => {
     setLoading(true)
     setError(null)
-    console.log(`🟣 UserTrends: Fetching ${selectedMetric} data with dateRange=`, dateRange)
+    console.log(`🟣 UserTrends: Fetching ${selectedMetric} data with dateRange=`, dateRange, 'userId=', userId)
 
     try {
-      // Fetch total users data
-      const total = await dashboardService.getUserTotal()
+      // Fetch total users data with date range for new users calculation
+      const total = await dashboardService.getUserTotal(userId, dateRange?.start, dateRange?.end)
       console.log(`✅ UserTrends: Successfully fetched total data:`, total)
       console.log(`   - totalUsers: ${total?.totalUsers}`)
       console.log(`   - activeUsers: ${total?.activeUsers}`)
@@ -99,11 +101,11 @@ const UserTrends = () => {
       // Fetch trend data based on selected metric
       let result
       if (selectedMetric === 'creation') {
-        result = await dashboardService.getUserCreationTrends(dateRange?.start, dateRange?.end)
+        result = await dashboardService.getUserCreationTrends(dateRange?.start, dateRange?.end, userId)
       } else if (selectedMetric === 'active') {
-        result = await dashboardService.getUserActiveTrends(dateRange?.start, dateRange?.end)
+        result = await dashboardService.getUserActiveTrends(dateRange?.start, dateRange?.end, userId)
       } else if (selectedMetric === 'retention') {
-        result = await dashboardService.getUserRetention(dateRange?.start, dateRange?.end)
+        result = await dashboardService.getUserRetention(dateRange?.start, dateRange?.end, userId)
       }
 
       // Fill in missing dates (only for daily data)

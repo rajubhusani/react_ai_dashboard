@@ -3,6 +3,8 @@ import { useDateRange } from '../hooks'
 import { getThemeFromStorage, setThemeInStorage } from '../utils'
 import { THEME_CONFIG } from '../constants'
 import { getTodayISO } from '../utils'
+import { dashboardService } from '../api/dashboardService'
+import { exportToExcel } from '../utils/excelExport'
 import './Header.css'
 
 const Header = () => {
@@ -12,12 +14,34 @@ const Header = () => {
     const saved = localStorage.getItem('accountCode')
     return saved || ''
   })
+  const [userId, setUserId] = useState(() => {
+    const saved = localStorage.getItem('userId')
+    return saved || ''
+  })
+  const [isDownloading, setIsDownloading] = useState(false)
 
   useEffect(() => {
     // Apply theme to document root
     document.documentElement.setAttribute('data-theme', theme)
     setThemeInStorage(theme)
   }, [theme])
+
+  // Dispatch userId change event
+  useEffect(() => {
+    // Save to localStorage
+    if (userId) {
+      localStorage.setItem('userId', userId)
+    } else {
+      localStorage.removeItem('userId')
+    }
+
+    // Dispatch event for widgets to listen
+    const event = new CustomEvent('userIdChange', {
+      detail: userId
+    })
+    window.dispatchEvent(event)
+    console.log('🔍 Header: User ID changed:', userId)
+  }, [userId])
 
   // Dispatch account code change event
   useEffect(() => {
@@ -36,6 +60,14 @@ const Header = () => {
     console.log('🔍 Header: Account code changed:', accountCode)
   }, [accountCode])
 
+  const handleUserIdChange = (e) => {
+    setUserId(e.target.value)
+  }
+
+  const handleClearUserId = () => {
+    setUserId('')
+  }
+
   const handleAccountCodeChange = (e) => {
     setAccountCode(e.target.value)
   }
@@ -52,6 +84,61 @@ const Header = () => {
     )
   }
 
+  const handleDownload = async () => {
+    setIsDownloading(true)
+    try {
+      console.log('📥 Starting analytics download...')
+
+      // Fetch raw analytics data
+      const rawData = await dashboardService.fetchRawAnalytics()
+
+      // Apply filters
+      let filteredData = rawData
+
+      // Filter by userId
+      if (userId) {
+        filteredData = dashboardService.filterByUserId(filteredData, userId)
+      }
+
+      // Filter by accountCode
+      if (accountCode) {
+        filteredData = dashboardService.filterByAccountCode(filteredData, accountCode)
+      }
+
+      // Filter by date range
+      if (dateRange?.start || dateRange?.end) {
+        filteredData = filteredData.filter((entry) => {
+          const entryDate = new Date(entry.timestamp)
+          const startDate = dateRange.start ? new Date(dateRange.start) : null
+          const endDate = dateRange.end ? new Date(dateRange.end) : null
+
+          if (startDate && entryDate < startDate) return false
+          if (endDate) {
+            // Set end date to end of day
+            const endOfDay = new Date(endDate)
+            endOfDay.setHours(23, 59, 59, 999)
+            if (entryDate > endOfDay) return false
+          }
+          return true
+        })
+      }
+
+      // Generate filename with timestamp
+      const timestamp = new Date().toISOString().split('T')[0]
+      const filename = `analytics-export-${timestamp}.xlsx`
+
+      // Export to Excel
+      exportToExcel(filteredData, filename)
+
+      console.log(`✅ Downloaded ${filteredData.length} records`)
+    } catch (error) {
+      console.error('❌ Error downloading analytics:', error)
+      alert('Failed to download analytics. Please try again.')
+    } finally {
+      setIsDownloading(false)
+    }
+  }
+
   const today = getTodayISO()
 
   return (
@@ -61,6 +148,43 @@ const Header = () => {
       </div>
 
       <div className="header-right">
+        {/* User Search */}
+        <div className="account-code-search">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            className="account-search-icon"
+          >
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <input
+            type="text"
+            value={userId}
+            onChange={handleUserIdChange}
+            placeholder="User (e.g., test@corpay.com)"
+            className="account-code-input"
+            title="Filter by user ID"
+          />
+          {userId && (
+            <button
+              className="clear-account-btn"
+              onClick={handleClearUserId}
+              aria-label="Clear user ID"
+              title="Clear user ID"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          )}
+        </div>
+
         {/* Account Code Search */}
         <div className="account-code-search">
           <svg
@@ -133,6 +257,26 @@ const Header = () => {
             title="End date (max 30 days range)"
           />
         </div>
+
+        {/* Download Button */}
+        <button
+          className="header-button download-btn"
+          onClick={handleDownload}
+          disabled={isDownloading}
+          title="Download analytics data as Excel file"
+        >
+          {isDownloading ? (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="spinning">
+              <circle cx="12" cy="12" r="10"></circle>
+            </svg>
+          ) : (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+          )}
+        </button>
 
         {/* Theme Toggle */}
         <button

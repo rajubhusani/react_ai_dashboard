@@ -3,6 +3,7 @@ import { dashboardService } from '../api/dashboardService'
 import AreaChart from './AreaChart'
 import InfoTooltip from './InfoTooltip'
 import { widgetTooltips } from './widgetTooltips'
+import { useUserIdListener } from '../hooks/useUserIdListener'
 import './Trends.css'
 
 const Trends = () => {
@@ -17,10 +18,11 @@ const Trends = () => {
     const saved = localStorage.getItem('dateRange')
     return saved ? JSON.parse(saved) : null
   })
+  const userId = useUserIdListener()
 
   useEffect(() => {
     fetchData()
-  }, [dateRange, accountCode])
+  }, [dateRange, accountCode, userId])
 
   useEffect(() => {
     // Listen for date range changes from header
@@ -47,12 +49,13 @@ const Trends = () => {
   const fetchData = async () => {
     setLoading(true)
     setError(null)
-    console.log(`🟢 Trends: Fetching data with dateRange=`, dateRange, 'accountCode=', accountCode)
+    console.log(`🟢 Trends: Fetching data with dateRange=`, dateRange, 'accountCode=', accountCode, 'userId=', userId)
     try {
       const result = await dashboardService.getTrends(
         dateRange?.start,
         dateRange?.end,
-        accountCode
+        accountCode,
+        userId
       )
       console.log(`✅ Trends: Successfully fetched ${result.length} records`)
 
@@ -79,12 +82,14 @@ const Trends = () => {
   const maxCount = data.length > 0 ? Math.max(...data.map(item => item.count)) : 0
   const minCount = data.length > 0 ? Math.min(...data.map(item => item.count)) : 0
 
-  // Calculate trend direction
-  const firstHalf = data.slice(0, Math.floor(data.length / 2))
-  const secondHalf = data.slice(Math.floor(data.length / 2))
-  const firstHalfAvg = firstHalf.reduce((sum, item) => sum + item.count, 0) / (firstHalf.length || 1)
-  const secondHalfAvg = secondHalf.reduce((sum, item) => sum + item.count, 0) / (secondHalf.length || 1)
-  const trendPercentage = firstHalfAvg > 0 ? ((secondHalfAvg - firstHalfAvg) / firstHalfAvg) * 100 : 0
+  // Calculate trend direction - compare first week average vs last week average
+  // This gives a more accurate representation of overall trend direction
+  const daysToCompare = Math.min(7, Math.floor(data.length / 2)) // Use up to 7 days or half the data
+  const firstPeriod = data.slice(0, daysToCompare)
+  const lastPeriod = data.slice(-daysToCompare)
+  const firstPeriodAvg = firstPeriod.reduce((sum, item) => sum + item.count, 0) / (firstPeriod.length || 1)
+  const lastPeriodAvg = lastPeriod.reduce((sum, item) => sum + item.count, 0) / (lastPeriod.length || 1)
+  const trendPercentage = firstPeriodAvg > 0 ? ((lastPeriodAvg - firstPeriodAvg) / firstPeriodAvg) * 100 : 0
 
   return (
     <div className="widget trends">

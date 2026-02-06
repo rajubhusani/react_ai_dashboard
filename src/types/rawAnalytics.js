@@ -7,10 +7,13 @@
  * @typedef {Object} RawAnalyticsEntry
  * @property {string} userId
  * @property {string} query
+ * @property {string} [response] - AI response text
  * @property {string} intent
  * @property {('positive' | 'negative' | 'neutral' | 'mixed' | 'unknown')} sentiment
  * @property {number} responseTime - in milliseconds
  * @property {string} timestamp - ISO date string
+ * @property {string} [appFlavor] - App identifier (e.g., Comdata App, Corpay Fleet app)
+ * @property {string} [sysAccountId] - System account identifier
  * @property {Object} [parameters]
  * @property {string} [parameters.action]
  * @property {string[]} [parameters.amenities]
@@ -21,7 +24,23 @@
  */
 
 /**
+ * @typedef {Object} PaginationInfo
+ * @property {number} page - Current page number
+ * @property {number} limit - Items per page
+ * @property {number} totalEntries - Total number of entries
+ * @property {number} totalPages - Total number of pages
+ * @property {boolean} hasNextPage - Whether there's a next page
+ * @property {boolean} hasPrevPage - Whether there's a previous page
+ */
+
+/**
  * @typedef {Object} RawAnalyticsResponse
+ * @property {RawAnalyticsEntry[]} entries - Array of analytics entries
+ * @property {PaginationInfo} pagination - Pagination metadata
+ */
+
+/**
+ * @typedef {Object} RawAnalyticsResponseLegacy
  * @property {RawAnalyticsEntry[]} data
  * @property {number} total
  * @property {string} timestamp

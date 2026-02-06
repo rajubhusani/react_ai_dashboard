@@ -23,10 +23,14 @@ export const SessionsProvider = ({ children }) => {
     const saved = localStorage.getItem('accountCode')
     return saved || ''
   })
+  const [userId, setUserId] = useState(() => {
+    const saved = localStorage.getItem('userId')
+    return saved || ''
+  })
 
   useEffect(() => {
     fetchSessionsData()
-  }, [dateRange, accountCode])
+  }, [dateRange, accountCode, userId])
 
   useEffect(() => {
     const handleDateRangeChange = (event) => {
@@ -46,20 +50,31 @@ export const SessionsProvider = ({ children }) => {
     return () => window.removeEventListener('accountCodeChange', handleAccountCodeChange)
   }, [])
 
+  useEffect(() => {
+    const handleUserIdChange = (event) => {
+      console.log('👤 SessionsContext: User ID changed:', event.detail)
+      setUserId(event.detail)
+    }
+    window.addEventListener('userIdChange', handleUserIdChange)
+    return () => window.removeEventListener('userIdChange', handleUserIdChange)
+  }, [])
+
   const fetchSessionsData = async () => {
     setLoading(true)
     setError(null)
-    console.log('📡 SessionsContext: Fetching sessions data (SINGLE API CALL) with dateRange=', dateRange, 'accountCode=', accountCode)
+    console.log('📡 SessionsContext: Fetching sessions data (SINGLE API CALL) with dateRange=', dateRange, 'accountCode=', accountCode, 'userId=', userId)
 
     try {
       const result = await dashboardService.getSessions(
         dateRange?.start,
         dateRange?.end,
-        accountCode
+        accountCode,
+        userId
       )
       console.log('✅ SessionsContext: Successfully fetched sessions data:', result)
       console.log('   📊 Total sessions:', result?.totalSessions || 0)
       console.log('   🔍 Account code filter:', accountCode || 'none')
+      console.log('   👤 User ID filter:', userId || 'none')
       console.log('   🔄 This data will be shared across all session widgets')
 
       setSessionsData(result)
@@ -78,6 +93,7 @@ export const SessionsProvider = ({ children }) => {
     error,
     dateRange,
     accountCode,
+    userId,
     refetch: fetchSessionsData
   }
 

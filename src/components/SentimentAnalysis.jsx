@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { dashboardService } from '../api/dashboardService'
 import InfoTooltip from './InfoTooltip'
 import { widgetTooltips } from './widgetTooltips'
+import { useUserIdListener } from '../hooks/useUserIdListener'
 import './SentimentAnalysis.css'
 
 const SentimentAnalysis = () => {
@@ -18,11 +19,12 @@ const SentimentAnalysis = () => {
     const saved = localStorage.getItem('dateRange')
     return saved ? JSON.parse(saved) : null
   })
+  const userId = useUserIdListener()
 
   useEffect(() => {
-    console.log('📅 SentimentAnalysis: useEffect triggered with dateRange:', dateRange, 'accountCode:', accountCode)
+    console.log('📅 SentimentAnalysis: useEffect triggered with dateRange:', dateRange, 'accountCode:', accountCode, 'userId:', userId)
     fetchSentimentData()
-  }, [dateRange, accountCode])
+  }, [dateRange, accountCode, userId])
 
   useEffect(() => {
     // Listen for date range changes
@@ -64,8 +66,8 @@ const SentimentAnalysis = () => {
         console.log('📅 SentimentAnalysis: No date range available, calling API without dates')
       }
 
-      console.log('📅 SentimentAnalysis: Calling getSentiment API with:', { startDate, endDate, accountCode })
-      const data = await dashboardService.getSentiment(startDate, endDate, accountCode)
+      console.log('📅 SentimentAnalysis: Calling getSentiment API with:', { startDate, endDate, accountCode, userId })
+      const data = await dashboardService.getSentiment(startDate, endDate, accountCode, userId)
       console.log('😊 SentimentAnalysis: Received data:', data)
       console.log('😊 SentimentAnalysis: totalQueries:', data.totalQueries)
       console.log('😊 SentimentAnalysis: satisfactionScore:', data.satisfactionScore)

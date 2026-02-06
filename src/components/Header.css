@@ -218,6 +218,29 @@
   border-color: #9ca3af;
 }
 
+.header-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.header-button:disabled:hover {
+  background-color: transparent;
+  border-color: #d1d5db;
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .beta-badge {
   background: #10b981;
   color: white;
@@ -298,4 +321,9 @@
 [data-theme='dark'] .header-button:hover {
   background: #4b5563;
   border-color: #6b7280;
+}
+
+[data-theme='dark'] .header-button:disabled:hover {
+  background: #374151;
+  border-color: #4b5563;
 }

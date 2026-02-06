@@ -3,6 +3,7 @@ import { dashboardService } from '../api/dashboardService'
 import AreaChart from './AreaChart'
 import InfoTooltip from './InfoTooltip'
 import { widgetTooltips } from './widgetTooltips'
+import { useUserIdListener } from '../hooks/useUserIdListener'
 import './AccountAnalytics.css'
 
 const AccountAnalytics = () => {
@@ -17,10 +18,11 @@ const AccountAnalytics = () => {
     const saved = localStorage.getItem('dateRange')
     return saved ? JSON.parse(saved) : null
   })
+  const userId = useUserIdListener()
 
   useEffect(() => {
     fetchData()
-  }, [dateRange, accountCode])
+  }, [dateRange, accountCode, userId])
 
   useEffect(() => {
     // Listen for date range changes from header
@@ -47,12 +49,13 @@ const AccountAnalytics = () => {
   const fetchData = async () => {
     setLoading(true)
     setError(null)
-    console.log(`🟢 AccountAnalytics: Fetching data with dateRange=`, dateRange, 'accountCode=', accountCode)
+    console.log(`🟢 AccountAnalytics: Fetching data with dateRange=`, dateRange, 'accountCode=', accountCode, 'userId=', userId)
     try {
       const result = await dashboardService.getAccountAnalytics(
         accountCode,
         dateRange?.start,
-        dateRange?.end
+        dateRange?.end,
+        userId
       )
       console.log(`✅ AccountAnalytics: Successfully fetched ${result.length} records`)
 

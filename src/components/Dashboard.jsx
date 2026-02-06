@@ -18,11 +18,6 @@ const Dashboard = () => {
     <div className="dashboard">
       <div className="dashboard-grid">
 
-        {/* Sentiment Analysis Section - Full Width */}
-        <div className="dashboard-row full-width">
-          <SentimentAnalysis />
-        </div>
-
         {/* Trends and Account Analytics Row */}
         <div className="dashboard-row">
           <Trends />
@@ -31,6 +26,11 @@ const Dashboard = () => {
 
         <div className="dashboard-row full-width">
           <Intents />
+        </div>
+
+         {/* Sentiment Analysis Section - Full Width */}
+        <div className="dashboard-row full-width">
+          <SentimentAnalysis />
         </div>
 
         {/* Session Duration Row */}

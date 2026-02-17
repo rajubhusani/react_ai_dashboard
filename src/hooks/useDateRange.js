@@ -69,7 +69,7 @@ export const useDateRange = () => {
    */
   const handleDateChange = (type, value) => {
     const today = getTodayISO()
-    const MAX_DAYS = 30
+    const MAX_DAYS = 90
 
     // Validate that the selected date is not in the future
     if (value > today) {
@@ -86,7 +86,7 @@ export const useDateRange = () => {
         return
       }
 
-      // Check if date range exceeds 30 days
+      // Check if date range exceeds 90 days
       const daysDiff = getDaysDifference(value, endDate)
       if (daysDiff > MAX_DAYS) {
         logWarning('useDateRange', `Date range cannot exceed ${MAX_DAYS} days. Adjusting end date.`)

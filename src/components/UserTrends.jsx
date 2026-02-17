@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { dashboardService } from '../api/dashboardService'
 import BarChart from './BarChart'
+import GroupedBarChart from './GroupedBarChart'
 import InfoTooltip from './InfoTooltip'
 import { widgetTooltips } from './widgetTooltips'
-import { useUserIdListener } from '../hooks/useUserIdListener'
 import './UserTrends.css'
 
 const UserTrends = () => {
@@ -11,16 +11,15 @@ const UserTrends = () => {
   const [trendData, setTrendData] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [selectedMetric, setSelectedMetric] = useState('creation') // creation, active, retention
   const [dateRange, setDateRange] = useState(() => {
     const saved = localStorage.getItem('dateRange')
     return saved ? JSON.parse(saved) : null
   })
-  const userId = useUserIdListener()
 
   useEffect(() => {
     fetchData()
-  }, [selectedMetric, dateRange, userId])
+    // Note: userId is intentionally NOT in dependencies - User Trends always shows all users
+  }, [dateRange])
 
   useEffect(() => {
     // Listen for date range changes from header
@@ -61,19 +60,10 @@ const UserTrends = () => {
         filledData.push(dataMap.get(dateStr))
       } else {
         // Add empty data point for missing date
-        if (selectedMetric === 'retention') {
-          filledData.push({
-            period: dateStr,
-            retentionRate: 0,
-            activeUsers: 0,
-            totalUsers: 0
-          })
-        } else {
-          filledData.push({
-            period: dateStr,
-            count: 0
-          })
-        }
+        filledData.push({
+          period: dateStr,
+          count: 0
+        })
       }
 
       // Increment by 1 day
@@ -83,34 +73,59 @@ const UserTrends = () => {
     return filledData
   }
 
+  const mergeTrendData = (newUsersData, activeUsersData) => {
+    // Create a map to merge data by period
+    const mergedMap = new Map()
+
+    // Add new users data
+    newUsersData.forEach(item => {
+      mergedMap.set(item.period, { period: item.period, newUsers: item.count, activeUsers: 0 })
+    })
+
+    // Add active users data
+    activeUsersData.forEach(item => {
+      if (mergedMap.has(item.period)) {
+        mergedMap.get(item.period).activeUsers = item.count
+      } else {
+        mergedMap.set(item.period, { period: item.period, newUsers: 0, activeUsers: item.count })
+      }
+    })
+
+    // Convert map to array and sort by period
+    return Array.from(mergedMap.values()).sort((a, b) => a.period.localeCompare(b.period))
+  }
+
   const fetchData = async () => {
     setLoading(true)
     setError(null)
-    console.log(`🟣 UserTrends: Fetching ${selectedMetric} data with dateRange=`, dateRange, 'userId=', userId)
+    console.log(`🟣 UserTrends: Fetching data for all users (ignoring userId filter) with dateRange=`, dateRange)
 
     try {
-      // Fetch total users data with date range for new users calculation
-      const total = await dashboardService.getUserTotal(userId, dateRange?.start, dateRange?.end)
-      console.log(`✅ UserTrends: Successfully fetched total data:`, total)
+      // Fetch total users data - Do NOT filter by userId, always show all users
+      const total = await dashboardService.getUserTotal(null, dateRange?.start, dateRange?.end)
+      console.log(`✅ UserTrends: Successfully fetched total data (all users):`, total)
       console.log(`   - totalUsers: ${total?.totalUsers}`)
       console.log(`   - activeUsers: ${total?.activeUsers}`)
       console.log(`   - newUsers: ${total?.newUsers}`)
+      console.log(`   - newUsers30Days: ${total?.newUsers30Days}`)
       console.log(`   - retentionRate: ${total?.retentionRate}`)
       setTotalData(total)
 
-      // Fetch trend data based on selected metric
-      let result
-      if (selectedMetric === 'creation') {
-        result = await dashboardService.getUserCreationTrends(dateRange?.start, dateRange?.end, userId)
-      } else if (selectedMetric === 'active') {
-        result = await dashboardService.getUserActiveTrends(dateRange?.start, dateRange?.end, userId)
-      } else if (selectedMetric === 'retention') {
-        result = await dashboardService.getUserRetention(dateRange?.start, dateRange?.end, userId)
-      }
+      // Fetch both new users and active users trend data for the last 30 days
+      // NOTE: Do NOT filter by userId - User Trends should always show all users' data
+      const newUsersResult = await dashboardService.getUserCreationTrends30Days(null)
+      const activeUsersResult = await dashboardService.getUserActiveTrends30Days(null)
 
-      // Fill in missing dates (only for daily data)
-      const filledResult = fillMissingDates(result, 'day')
-      setTrendData(filledResult)
+      console.log(`✅ UserTrends: Fetched new users trend (all users):`, newUsersResult)
+      console.log(`✅ UserTrends: Fetched active users trend (all users):`, activeUsersResult)
+
+      // Fill in missing dates for both datasets
+      const filledNewUsers = fillMissingDates(newUsersResult, 'day')
+      const filledActiveUsers = fillMissingDates(activeUsersResult, 'day')
+
+      // Merge the two datasets by period
+      const mergedData = mergeTrendData(filledNewUsers, filledActiveUsers)
+      setTrendData(mergedData)
     } catch (err) {
       console.error(`❌ UserTrends: Failed to fetch data:`, err)
       setError(err?.message || 'Failed to load user trends')
@@ -118,15 +133,6 @@ const UserTrends = () => {
       setLoading(false)
     }
   }
-
-  const metrics = [
-    { key: 'creation', label: 'New Users', color: '#3b82f6', dataKey: 'count', tooltipLabel: 'New Users' }
-    // Hidden: Active Users and Retention Rate tabs
-    // { key: 'active', label: 'Active Users', color: '#10b981', dataKey: 'count', tooltipLabel: 'Active Users' },
-    // { key: 'retention', label: 'Retention Rate', color: '#f59e0b', dataKey: 'retentionRate', tooltipLabel: 'Retention Rate' }
-  ]
-
-  const currentMetric = metrics.find(m => m.key === selectedMetric) || metrics[0]
 
   // Add error boundary
   try {
@@ -157,17 +163,23 @@ const UserTrends = () => {
                 </div>
               </div>
               <div className="stat-card">
+                <div className="stat-label">New Users</div>
+                <div className="stat-value">
+                  {totalData.newUsers30Days != null ? totalData.newUsers30Days.toLocaleString() : 'N/A'}
+                </div>
+              </div>
+              <div className="stat-card">
                 <div className="stat-label">Active Users</div>
                 <div className="stat-value">
                   {totalData.activeUsers != null ? totalData.activeUsers.toLocaleString() : 'N/A'}
                 </div>
               </div>
-              <div className="stat-card">
+              {/* <div className="stat-card">
                 <div className="stat-label">New Users</div>
                 <div className="stat-value">
                   {totalData.newUsers != null ? totalData.newUsers.toLocaleString() : 'N/A'}
                 </div>
-              </div>
+              </div> */}
               <div className="stat-card">
                 <div className="stat-label">Retention Rate</div>
                 <div className="stat-value">
@@ -181,13 +193,14 @@ const UserTrends = () => {
 
           {/* Chart */}
           <div className="chart-container">
-            {trendData && trendData.length > 0 && currentMetric ? (
-              <BarChart
+            {trendData && trendData.length > 0 ? (
+              <GroupedBarChart
                 data={trendData}
-                dataKey={currentMetric.dataKey}
-                color={currentMetric.color}
+                series={[
+                  { dataKey: 'newUsers', color: '#8b5cf6', label: 'New Users' },
+                  { dataKey: 'activeUsers', color: '#10b981', label: 'Active Users' }
+                ]}
                 height={240}
-                label={currentMetric.tooltipLabel}
               />
             ) : (
               <div style={{ padding: '40px', textAlign: 'center', color: '#6b7280' }}>

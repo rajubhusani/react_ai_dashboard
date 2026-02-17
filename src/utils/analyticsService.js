@@ -319,6 +319,14 @@ export const processUserTotal = (allEntries, startDate, endDate) => {
     }
   }
 
+  // Count new users in the last 30 days (rolling window)
+  let newUsers30Days = 0
+  for (const [userId, firstTimestamp] of userFirstSeen.entries()) {
+    if (firstTimestamp.isAfter(thirtyDaysAgo)) {
+      newUsers30Days++
+    }
+  }
+
   const totalUsers = uniqueUsers.size
   const activeCount = activeUsers.size
   const retentionRate = totalUsers > 0 ? (activeCount / totalUsers) * 100 : 0
@@ -327,20 +335,76 @@ export const processUserTotal = (allEntries, startDate, endDate) => {
     totalUsers,
     activeUsers: activeCount,
     newUsers: newUsersCount,
+    newUsers30Days: newUsers30Days,
     retentionRate: +retentionRate.toFixed(1)
   }
 }
 
 // Process User Creation Trends
 export const processUserCreationTrends = (allEntries, groupBy, startDate, endDate) => {
-  const entries = filterByDateRange(allEntries, startDate, endDate)
-  const grouped = {}
-  for (const e of entries) {
-    if (!e.timestamp || !e.userId) continue
-    const timeKey = getTimePeriodKey(e.timestamp, groupBy)
-    if (!grouped[timeKey]) grouped[timeKey] = new Set()
-    grouped[timeKey].add(e.userId)
+  // First, find the earliest timestamp for each user across ALL entries
+  const userFirstSeen = new Map()
+  for (const e of allEntries) {
+    if (e.userId && e.timestamp) {
+      const timestamp = dayjs(e.timestamp)
+      if (!userFirstSeen.has(e.userId) || timestamp.isBefore(userFirstSeen.get(e.userId))) {
+        userFirstSeen.set(e.userId, timestamp)
+      }
+    }
   }
+
+  // Now group users by the period of their first interaction (only within the selected date range)
+  const grouped = {}
+  const start = startDate ? dayjs(startDate).startOf('day') : null
+  const end = endDate ? dayjs(endDate).endOf('day') : null
+
+  for (const [userId, firstTimestamp] of userFirstSeen.entries()) {
+    // Only count users whose first interaction is within the selected date range
+    if (start && end) {
+      if ((firstTimestamp.isAfter(start) || firstTimestamp.isSame(start, 'day')) &&
+          (firstTimestamp.isBefore(end) || firstTimestamp.isSame(end, 'day'))) {
+        const timeKey = getTimePeriodKey(firstTimestamp.toISOString(), groupBy)
+        if (!grouped[timeKey]) grouped[timeKey] = new Set()
+        grouped[timeKey].add(userId)
+      }
+    } else {
+      // If no date range, include all users
+      const timeKey = getTimePeriodKey(firstTimestamp.toISOString(), groupBy)
+      if (!grouped[timeKey]) grouped[timeKey] = new Set()
+      grouped[timeKey].add(userId)
+    }
+  }
+
+  return Object.entries(grouped).map(([period, users]) => ({ period, count: users.size })).sort((a, b) => (a.period > b.period ? 1 : -1))
+}
+
+// Process User Creation Trends (30 Days Rolling Window)
+export const processUserCreationTrends30Days = (allEntries, groupBy) => {
+  // First, find the earliest timestamp for each user across ALL entries
+  const userFirstSeen = new Map()
+  for (const e of allEntries) {
+    if (e.userId && e.timestamp) {
+      const timestamp = dayjs(e.timestamp)
+      if (!userFirstSeen.has(e.userId) || timestamp.isBefore(userFirstSeen.get(e.userId))) {
+        userFirstSeen.set(e.userId, timestamp)
+      }
+    }
+  }
+
+  // Group users by the period of their first interaction (only within last 30 days)
+  const grouped = {}
+  const thirtyDaysAgo = dayjs().subtract(30, 'day')
+  const today = dayjs()
+
+  for (const [userId, firstTimestamp] of userFirstSeen.entries()) {
+    // Only count users whose first interaction is within the last 30 days
+    if (firstTimestamp.isAfter(thirtyDaysAgo) && (firstTimestamp.isBefore(today) || firstTimestamp.isSame(today, 'day'))) {
+      const timeKey = getTimePeriodKey(firstTimestamp.toISOString(), groupBy)
+      if (!grouped[timeKey]) grouped[timeKey] = new Set()
+      grouped[timeKey].add(userId)
+    }
+  }
+
   return Object.entries(grouped).map(([period, users]) => ({ period, count: users.size })).sort((a, b) => (a.period > b.period ? 1 : -1))
 }
 
@@ -355,6 +419,38 @@ export const processUserActiveTrends = (allEntries, groupBy, startDate, endDate)
     grouped[timeKey].add(e.userId)
   }
   return Object.entries(grouped).map(([period, users]) => ({ period, count: users.size })).sort((a, b) => (a.period > b.period ? 1 : -1))
+}
+
+// Process Active User Trends (Last 30 Days)
+// Shows unique active users per day, counting each user only on the FIRST day
+// they were active in the 30-day window. This ensures the sum of all bars
+// equals the Active Users tile count.
+export const processUserActiveTrends30Days = (allEntries, groupBy) => {
+  const thirtyDaysAgo = dayjs().subtract(30, 'day')
+  const today = dayjs()
+
+  // First pass: find the earliest activity date (within last 30 days) for each user
+  const userFirstActiveDay = new Map()
+  for (const e of allEntries) {
+    if (!e.timestamp || !e.userId) continue
+    const timestamp = dayjs(e.timestamp)
+
+    if (timestamp.isAfter(thirtyDaysAgo) && (timestamp.isBefore(today) || timestamp.isSame(today, 'day'))) {
+      const dayKey = getTimePeriodKey(e.timestamp, groupBy)
+      if (!userFirstActiveDay.has(e.userId) || dayKey < userFirstActiveDay.get(e.userId)) {
+        userFirstActiveDay.set(e.userId, dayKey)
+      }
+    }
+  }
+
+  // Second pass: group users by their first active day
+  const grouped = {}
+  for (const [userId, firstDay] of userFirstActiveDay.entries()) {
+    if (!grouped[firstDay]) grouped[firstDay] = 0
+    grouped[firstDay]++
+  }
+
+  return Object.entries(grouped).map(([period, count]) => ({ period, count })).sort((a, b) => (a.period > b.period ? 1 : -1))
 }
 
 // Process User Retention

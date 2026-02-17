@@ -69,8 +69,9 @@ export const widgetTooltips = {
       <p><strong>Metrics:</strong></p>
       <ul>
         <li><strong>Total Users:</strong> Cumulative count of all unique users who have ever interacted with the AI</li>
+        <li><strong>New Users:</strong> Number of users making their first interaction with the AI in the last 30 days</li>
         <li><strong>Active Users:</strong> Number of users who have interacted with the AI in the last 30 days</li>
-        <li><strong>New Users:</strong> Number of users making their first interaction within the selected date range</li>
+        {/* <li><strong>New Users:</strong> Number of users making their first interaction within the selected date range</li> */}
         <li><strong>Retention Rate:</strong> Percentage of total users who were active in the most recent 30 days</li>
       </ul>
       <p>Track user growth, retention, and engagement levels.</p>

@@ -7,7 +7,9 @@ import {
   processAIUsageTrends,
   processUserTotal,
   processUserCreationTrends,
+  processUserCreationTrends30Days,
   processUserActiveTrends,
+  processUserActiveTrends30Days,
   processUserRetention,
 } from '../utils/analyticsService'
 import { processAccountAnalytics, extractAccountCode } from '../utils/accountAnalyticsService'
@@ -226,10 +228,22 @@ dashboardService.getUserCreationTrends = async (startDate, endDate, userId) => {
   return processUserCreationTrends(filtered, 'day', startDate, endDate)
 }
 
+dashboardService.getUserCreationTrends30Days = async (userId) => {
+  const rawData = await fetchRawAnalytics()
+  const filtered = filterByUserId(rawData, userId)
+  return processUserCreationTrends30Days(filtered, 'day')
+}
+
 dashboardService.getUserActiveTrends = async (startDate, endDate, userId) => {
   const rawData = await fetchRawAnalytics()
   const filtered = filterByUserId(rawData, userId)
   return processUserActiveTrends(filtered, 'day', startDate, endDate)
+}
+
+dashboardService.getUserActiveTrends30Days = async (userId) => {
+  const rawData = await fetchRawAnalytics()
+  const filtered = filterByUserId(rawData, userId)
+  return processUserActiveTrends30Days(filtered, 'day')
 }
 
 dashboardService.getUserRetention = async (startDate, endDate, userId) => {
